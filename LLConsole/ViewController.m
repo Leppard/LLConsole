@@ -20,7 +20,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTappedHomePage)];
     [self.view addGestureRecognizer:tap];
-    // Do any additional setup after loading the view, typically from a nib.
+    LLLog(@"asdasd, asd");
+    
 }
 
 #pragma mark - event response
