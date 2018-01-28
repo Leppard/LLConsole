@@ -24,6 +24,7 @@
         self.backgroundColor = [UIColor blackColor];
         _logView = [[UITextView alloc] initWithFrame:CGRectZero];
         _logView.backgroundColor = [UIColor blackColor];
+        _logView.userInteractionEnabled = NO;
         [self addSubview:_logView];
         [self setUpConstraints];
     }

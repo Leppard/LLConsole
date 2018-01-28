@@ -66,16 +66,28 @@ void LLLog(NSString *format, ...) {
 - (void)addGestureToConsoleView {
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveConsoleView:)];
     [self.consoleView addGestureRecognizer:pan];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTappedConsoleView:)];
+    [self.consoleView addGestureRecognizer:tap];
 }
 
 - (void)moveConsoleView:(UIPanGestureRecognizer *)sender {
-    CGPoint translation = [sender translationInView:sender.view.superview];
+    UIView *superView = sender.view.superview;
+    CGPoint translation = [sender translationInView:superView];
     sender.view.center = CGPointMake(sender.view.center.x+translation.x, sender.view.center.y+translation.y);
-    [sender setTranslation:CGPointZero inView:sender.view.superview];
-    NSLog(@"%@", NSStringFromCGPoint(translation));
-//    [UIView animateWithDuration:0.2 animations:^{
-//        sender.view.center = CGPointMake(sender.view.center.x+translation.x, sender.view.center.y+translation.y);
-//    }];
+    [sender setTranslation:CGPointZero inView:superView];
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        [UIView animateWithDuration:0.4 animations:^{
+            sender.view.center = sender.view.center.x < superView.bounds.size.width/2 ? CGPointMake(sender.view.bounds.size.width/2, sender.view.center.y) :  CGPointMake(superView.bounds.size.width-sender.view.bounds.size.width/2, sender.view.center.y);
+        }];
+    }
+}
+
+- (void)didTappedConsoleView:(UITapGestureRecognizer *)sender {
+    UIView *superView = sender.view.superview;
+    [UIView animateWithDuration:0.5 animations:^{
+        sender.view.frame = sender.view.bounds.size.width > 50 ? CGRectMake(superView.bounds.origin.x, superView.bounds.origin.y+50, 50, 50) : superView.bounds;
+    }];
 }
 
 @end

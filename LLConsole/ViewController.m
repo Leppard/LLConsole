@@ -20,14 +20,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTappedHomePage)];
     [self.view addGestureRecognizer:tap];
-    LLLog(@"asdasd, asd");
-    
 }
 
 #pragma mark - event response
 
 - (void)didTappedHomePage {
     self.view.backgroundColor = [UIColor redColor];
+    NSLog(@"tap UIview");
     [[LLConsole shareConsole] start];
 }
 
