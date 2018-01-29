@@ -21,26 +21,21 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor whiteColor];
         _logView = [[UITextView alloc] initWithFrame:CGRectZero];
         _logView.backgroundColor = [UIColor blackColor];
         _logView.userInteractionEnabled = NO;
         [self addSubview:_logView];
-        [self setUpConstraints];
     }
     return self;
 }
 
+- (void)layoutSubviews {
+    _logView.frame = CGRectMake(self.bounds.origin.x+10, self.bounds.origin.y+10, self.bounds.size.width-20, self.bounds.size.height-20);
+}
+
 #pragma mark - private methods
 
-- (void)setUpConstraints {
-    _logView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_logView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_logView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_logView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_logView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-}
 
 
 @end
