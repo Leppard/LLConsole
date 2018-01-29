@@ -39,10 +39,7 @@ static LLConsole *console;
     }
     [self setUpConsoleView];
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    [UIView animateWithDuration:1 animations:^{
-        self.consoleView.frame = CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50);
-        }];
-    
+    self.consoleView.frame = CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50);
     self.isStarted = YES;
 }
 
@@ -87,6 +84,7 @@ void LLLog(NSString *format, ...) {
     UIView *superView = sender.view.superview;
     [UIView animateWithDuration:0.5 animations:^{
         sender.view.frame = sender.view.bounds.size.width > 50 ? CGRectMake(superView.bounds.origin.x, superView.bounds.origin.y+50, 50, 50) : superView.bounds;
+        [sender.view layoutIfNeeded];
     }];
 }
 
