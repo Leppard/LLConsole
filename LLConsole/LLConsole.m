@@ -43,12 +43,24 @@ static LLConsole *console;
     self.isStarted = YES;
 }
 
-void LLLog(NSString *format, ...) {
+// C version log function, not finished
+//void LLLog(NSString *format, ...) {
+//    va_list ap;
+//    va_start(ap, format);
+//    NSLogv(format, ap);
+//    va_end(ap);
+//}
+
+- (void)log:(NSString *)format, ... {
     va_list ap;
     va_start(ap, format);
-    NSLogv(format, ap);
+    if (self.isStarted) {
+        NSString *str = [NSString stringWithFormat:format, ap];
+        [self.consoleView logToViewWithString:str];
+    } else {
+        NSLogv(format, ap);
+    }
     va_end(ap);
-    // 如果LLConsole启动，那么输出到consoleView；如果没有启动，使用NSlog输出
 }
 
 #pragma mark - private methods

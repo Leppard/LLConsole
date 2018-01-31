@@ -21,9 +21,11 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor grayColor];
         _logView = [[UITextView alloc] initWithFrame:CGRectZero];
         _logView.backgroundColor = [UIColor blackColor];
+        _logView.textColor = [UIColor whiteColor];
+        _logView.font = [UIFont systemFontOfSize:12];
         _logView.userInteractionEnabled = NO;
         [self addSubview:_logView];
     }
@@ -34,8 +36,14 @@
     _logView.frame = CGRectMake(self.bounds.origin.x+10, self.bounds.origin.y+10, self.bounds.size.width-20, self.bounds.size.height-20);
 }
 
-#pragma mark - private methods
+#pragma mark - public methods
 
-
+- (void)logToViewWithString:(NSString *)string {
+    NSString *oldStr = _logView.text;
+    if (![oldStr isEqualToString:@""]) {
+        oldStr = [oldStr stringByAppendingString:@"\n"];
+    }
+    _logView.text = [oldStr stringByAppendingString:string];
+}
 
 @end

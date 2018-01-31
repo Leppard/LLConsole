@@ -11,6 +11,6 @@
 
 @interface LLConsoleView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame;
+- (void)logToViewWithString:(NSString *)string;
 
 @end

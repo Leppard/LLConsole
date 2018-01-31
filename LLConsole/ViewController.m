@@ -22,12 +22,14 @@
     [self.view addGestureRecognizer:tap];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [[LLConsole shareConsole] start];
+}
+
 #pragma mark - event response
 
 - (void)didTappedHomePage {
-    self.view.backgroundColor = [UIColor redColor];
-    NSLog(@"tap UIview");
-    [[LLConsole shareConsole] start];
+    [[LLConsole shareConsole] log:@"my name is"];
 }
 
 @end

@@ -13,7 +13,10 @@
 
 + (instancetype)shareConsole;
 
-void LLLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
+// C version log function, not finished
+//void LLLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2)
+
+- (void)log:(NSString *)format, ...;
 
 - (void)start;
 
