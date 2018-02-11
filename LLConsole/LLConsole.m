@@ -38,9 +38,12 @@ static LLConsole *console;
         return;
     }
     [self setUpConsoleView];
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    self.consoleView.frame = CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50);
     self.isStarted = YES;
+}
+
+- (void)stop {
+    [self.consoleView removeFromSuperview];
+    self.isStarted = NO;
 }
 
 // C version log function, not finished
@@ -58,6 +61,7 @@ static LLConsole *console;
         NSString *str = [NSString stringWithFormat:format, ap];
         [self.consoleView logToViewWithString:str];
     } else {
+        NSLog(@"LLConsole haven't started, call START method first.");
         NSLogv(format, ap);
     }
     va_end(ap);
@@ -67,7 +71,7 @@ static LLConsole *console;
 
 - (void)setUpConsoleView {
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    self.consoleView = [[LLConsoleView alloc] initWithFrame:keyWindow.frame];
+    self.consoleView = [[LLConsoleView alloc] initWithFrame:CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50)];
     [keyWindow addSubview:self.consoleView];
     [self addGestureToConsoleView];
 }
