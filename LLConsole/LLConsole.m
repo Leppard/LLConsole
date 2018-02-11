@@ -16,6 +16,8 @@ static LLConsole *console;
 @property (nonatomic, strong) LLConsoleView *consoleView;
 @property (nonatomic, assign) BOOL isStarted;
 
+@property (nonatomic, assign) CGRect iconFrame;
+
 @end
 
 @implementation LLConsole
@@ -34,16 +36,16 @@ static LLConsole *console;
 #pragma mark - pulic methods
 
 - (void)start {
-    if (self.isStarted) {
+    if (_isStarted) {
         return;
     }
     [self setUpConsoleView];
-    self.isStarted = YES;
+    _isStarted = YES;
 }
 
 - (void)stop {
-    [self.consoleView removeFromSuperview];
-    self.isStarted = NO;
+    [_consoleView removeFromSuperview];
+    _isStarted = NO;
 }
 
 // C version log function, not finished
@@ -57,9 +59,9 @@ static LLConsole *console;
 - (void)log:(NSString *)format, ... {
     va_list ap;
     va_start(ap, format);
-    if (self.isStarted) {
+    if (_isStarted) {
         NSString *str = [NSString stringWithFormat:format, ap];
-        [self.consoleView logToViewWithString:str];
+        [_consoleView logToViewWithString:str];
     } else {
         NSLog(@"LLConsole haven't started, call START method first.");
         NSLogv(format, ap);
@@ -71,17 +73,19 @@ static LLConsole *console;
 
 - (void)setUpConsoleView {
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    self.consoleView = [[LLConsoleView alloc] initWithFrame:CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50)];
-    [keyWindow addSubview:self.consoleView];
+    _consoleView = [[LLConsoleView alloc] initWithFrame:CGRectMake(keyWindow.bounds.origin.x, keyWindow.bounds.origin.y+50, 50, 50)];
+    [keyWindow addSubview:_consoleView];
     [self addGestureToConsoleView];
+    
+    _iconFrame = _consoleView.frame;
 }
 
 - (void)addGestureToConsoleView {
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveConsoleView:)];
-    [self.consoleView addGestureRecognizer:pan];
+    [_consoleView addGestureRecognizer:pan];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTappedConsoleView:)];
-    [self.consoleView addGestureRecognizer:tap];
+    [_consoleView addGestureRecognizer:tap];
 }
 
 - (void)moveConsoleView:(UIPanGestureRecognizer *)sender {
@@ -92,6 +96,8 @@ static LLConsole *console;
     if (sender.state == UIGestureRecognizerStateEnded) {
         [UIView animateWithDuration:0.4 animations:^{
             sender.view.center = sender.view.center.x < superView.bounds.size.width/2 ? CGPointMake(sender.view.bounds.size.width/2, sender.view.center.y) :  CGPointMake(superView.bounds.size.width-sender.view.bounds.size.width/2, sender.view.center.y);
+        } completion:^(BOOL finished) {
+            _iconFrame = sender.view.frame;
         }];
     }
 }
@@ -99,7 +105,7 @@ static LLConsole *console;
 - (void)didTappedConsoleView:(UITapGestureRecognizer *)sender {
     UIView *superView = sender.view.superview;
     [UIView animateWithDuration:0.5 animations:^{
-        sender.view.frame = sender.view.bounds.size.width > 50 ? CGRectMake(superView.bounds.origin.x, superView.bounds.origin.y+50, 50, 50) : superView.bounds;
+        sender.view.frame = sender.view.bounds.size.width > 50 ? _iconFrame : superView.bounds;
         [sender.view layoutIfNeeded];
     }];
 }
